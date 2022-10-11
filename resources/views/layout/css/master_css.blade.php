@@ -8,8 +8,8 @@
   margin-bottom: -100px; /*隨footer高度需做調整*/
 }
 .content{
-    padding-top: 50px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
-  padding-bottom: 50px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
+  padding-bottom: 100px; /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
+  height:90%;
 }
 .footer{
   height: 100px; /*設定footer本身高度*/

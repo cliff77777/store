@@ -5,7 +5,7 @@
     <div class="container content">
             <h1 class="mx-auto mb-3">{{$title}}</h1>
             @include('componets.validationErrorMessage')
-        <form action="sign_up" class="form form_control" method="POST">
+        <form action="addUser" class="form form_control" method="POST">
             {!! csrf_field() !!}
             <div class=" mb-3">
                 <label for="" class="px-2">Email</label>
@@ -27,8 +27,9 @@
                 <input type="text" class="form-control" name="name" placeholder="請輸入姓名" value="{{old('name')}}">
             </div>
                 <div class="">
-                    <button class="btn btn-primary" type="submit">註冊</button>
+                    <button class="btn btn-primary" type="submit">確定</button>
                     <a type="button" href="javascript:history.back()" class="btn btn-danger" >返回</a>
+                    <a type="button" href="{{route('signInPage')}}" class="btn btn-success" >會員登入</a>
                 </div>
         </form>
     </div>
