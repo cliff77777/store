@@ -3,7 +3,7 @@
 <div class="bg-secondary" >
 @section('content')
     <div class="container content">
-            <h1 class="mx-auto mb-3">{{$title}}</h1>
+            <h1 class="mx-auto m-5">{{$title}}</h1>
             @include('componets.validationErrorMessage')
         <form action="addUser" class="form form_control" method="POST">
             {!! csrf_field() !!}
