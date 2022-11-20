@@ -121,8 +121,8 @@ class MerchandiseController extends Controller
     public function productUpdateProcess(Request $request, Merchandise $Merchandise)
     {
         // log::info(count($_FILES));
-        log::info($request->file());
-
+        // log::info($request->file());
+        // dd($request->all());
         if(count($_FILES)>0){
             foreach($_FILES as $key=>$file){
                 $update_img=$this->saveimg($file,$key,$request['target_id'],$request->$key);

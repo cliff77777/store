@@ -59,6 +59,8 @@
                                 <input type="file" class="form-control img_file d-none"
                                     onchange="readURL(this,'#blah{{ $y }}');" id="photo{{ $y }}"
                                     name="photo{{ $y }}">
+                                <img class="imgupload" id="blah{{ $y }}" alt="your image" width="300"
+                                    src="{{ $photo_ablum[$i]['rotue'] }}" onclick="showInput(photo{{ $y }})" />
                                 <div class="">
                                     <label for="photo{{ $y }}">商品圖{{ $y }}:
                                         <span>
@@ -68,25 +70,31 @@
                                     <div>
                                         <input type="radio" id="font_img{{ $y }}" name="font_img"
                                             value="{{ $x . $y }}" data-target="{{ $x . $y }}"
-                                            class="$font_img">
+                                            class="font_img">
                                         <label for="font_img{{ $y }}">成為封面圖</label>
                                         <input type="checkbox" class="ms-2 del_img_c" value="{{ $x . $y }}"
                                             name="delete_img" id='delete_{{ $y }}'>
                                         <label for='delete_{{ $y }}'>刪除圖片</label>
                                     </div>
                                 </div>
-                                <img class="imgupload" id="blah{{ $y }}" alt="your image" width="300"
-                                    src="{{ $photo_ablum[$i]['rotue'] }}" onclick="showInput(photo{{ $y }})" />
                             </div>
                         @else
                             <div class="col-6">
                                 <div class=""><label for="photo{{ $y }}">商品圖{{ $y }}</label>
                                 </div>
                                 <input type="file" class="form-control img_file"
-                                    onchange="readURL(this,'#blah{{ $y }}');" id="photo{{ $y }}"
-                                    name="photo{{ $y }}">
+                                    onchange="readURL(this,'#blah{{ $y }}','#control_cbx{{ $y }}');"
+                                    id="photo{{ $y }}" name="photo{{ $y }}">
                                 <img class="imgupload d-none mt-2" id="blah{{ $y }}" src="#"
                                     alt="your image" width="300" src="" />
+                                <div class="d-none" id="control_cbx{{ $y }}">
+                                    <input type="radio" id="font_img{{ $y }}" name="font_img"
+                                        value="{{ $x . $y }}" data-target="{{ $x . $y }}" class="font_img">
+                                    <label for="font_img{{ $y }}">成為封面圖</label>
+                                    <input type="checkbox" class="ms-2 del_img_c" value="{{ $x . $y }}"
+                                        name="delete_img" id='delete_{{ $y }}'>
+                                    <label for='delete_{{ $y }}'>刪除圖片</label>
+                                </div>
                             </div>
                         @endif
                     @endfor
@@ -128,12 +136,14 @@
             }
 
             //選擇圖片即時顯示的js
-            function readURL(input, blash) {
+            function readURL(input, blash, control_cbx) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function(e) {
                         $(blash).attr('src', e.target.result);
                         $(blash).removeClass("d-none");
+                        $(control_cbx).removeClass("d-none");
+
                     }
                     reader.readAsDataURL(input.files[0]);
                 }
@@ -155,28 +165,31 @@
                 //刪除圖片控制
                 var del_img_group = [];
                 $(".del_img_c").click(function() {
+                    var font_img = $('input[name=font_img]:checked').val()
                     var img_info = this.value;
                     if ($(this).prop('checked') == true) {
                         del_img_group.push(img_info)
-                        if (img_info == $('input[id='
-                                img_info ']:checked').val()) {
-                            $('input[id='
-                                img_info ']').attr("checked", false);
+                        if (font_img == img_info) {
+                            $('input[name=font_img]:checked').prop('checked', false);
                         }
                     } else {
                         del_img_group = del_img_group.filter((item) => item != img_info)
                     }
                     $("#del_img").val(del_img_group);
-                    console.log(del_img_group);
                 })
 
+                // 控制如果選擇刪除圖片則不能成為封面圖
+                $(".font_img").click(function() {
+                    var target_img = $(this).val();
+                    var img_group = $("#del_img").val();
+                    var font_false = img_group.search(target_img);
+                    if (font_false !== -1) {
+                        var target_img_id = "#" + target_img;
+                        $('input[name=font_img]:checked').prop('checked', false);
+                    }
+                })
 
                 $("#edit_data_btn").click(function() {
-
-                    // var img_group = [$("#photo1")[0].files[0], $("#photo2")[0].files[0], $("#photo3")[0].files[
-                    //     0], $("#photo4")[0].files[0], $("#photo5")[0].files[0]];
-                    // var check_img_count = img_group.filter(word => word !== undefined);
-
                     var formData = new FormData();
                     formData.append("file1", $("#photo1")[0].files[0]);
                     formData.append("file2", $("#photo2")[0].files[0]);
@@ -193,39 +206,34 @@
                     formData.append("target_id", $("#target_id").val());
                     formData.append("del_img_group", $("#del_img").val());
                     var font_img = $('input[name=font_img]:checked').val()
-                    console.log(formData);
+                    formData.append("font_img", font_img);
 
-                    // $.ajax({
-                    //     type: 'post',
-                    //     url: '{{ url('merchandise/product_update') }}',
-                    //     dataType: "json",
-                    //     data: formData,
-                    //     processData: false,
-                    //     contentType: false,
-                    //     headers: {
-                    //         'X-CSRF-Token': '{{ csrf_token() }}'
-                    //     },
-                    //     success: function(res) {
-                    //         let status = res['data']['status'];
-                    //         if (status == "200") {
-                    //             toastr.success("修改成功");
-                    //             window.setTimeout(function() {
-                    //                 window.location.reload();
-                    //             }, 2000);
-                    //         } else {
-                    //             toastr.error("修改失敗");
-                    //         }
-                    //     },
-                    //     error: function(fail) {
-                    //         console.log(fail);
-                    //     }
-                    // });
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ url('merchandise/product_update') }}',
+                        dataType: "json",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-Token': '{{ csrf_token() }}'
+                        },
+                        success: function(res) {
+                            let status = res['data']['status'];
+                            if (status == "200") {
+                                toastr.success("修改成功");
+                                window.setTimeout(function() {
+                                    window.location.reload();
+                                }, 2000);
+                            } else {
+                                toastr.error("修改失敗");
+                            }
+                        },
+                        error: function(fail) {
+                            console.log(fail);
+                        }
+                    });
                 })
-
             })
-
-            function showInput(id) {
-                id.click();
-            }
         </script>
     @endsection
