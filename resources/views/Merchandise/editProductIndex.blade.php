@@ -10,7 +10,9 @@
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="open_status" name="open_status"
                         {{ $data['status'] == '1' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="open_status" id="open_status_label">關閉上架功能</label>
+                    <label class="form-check-label" for="open_status" id="open_status_label">
+                        {{ $data['status'] == '1' ? '開啟上架功能' : '關閉上架功能' }}
+                    </label>
                 </div>
                 <input type="text" class="form-control d-none" required name="id" value={{ $data['id'] }}>
                 <span class="ns_font">(必填)</span>

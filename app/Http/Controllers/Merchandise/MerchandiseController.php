@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Merchandise;
 use App\Models\ProductAblum;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Mockery\Undefined;
 
 class MerchandiseController extends Controller
 {   
@@ -108,7 +109,7 @@ class MerchandiseController extends Controller
         $product_data['photo']=$this->img_route($product_data['photo']);
 
         //商品相簿
-        $product_ablum=ProductAblum::where('merchandise_id',$id)->get();
+        $product_ablum=ProductAblum::where('merchandise_id',$id)->orderBy('photo_order','asc')->get();
         foreach($product_ablum as $key=>$value){
             $product_ablum[$key]['rotue']=$this->img_route($value['photo_name']);
         }
@@ -120,44 +121,82 @@ class MerchandiseController extends Controller
 
     public function productUpdateProcess(Request $request, Merchandise $Merchandise)
     {
-        // log::info(count($_FILES));
         // log::info($request->file());
-        // dd($request->all());
-        if(count($_FILES)>0){
-            foreach($_FILES as $key=>$file){
-                $update_img=$this->saveimg($file,$key,$request['target_id'],$request->$key);
-                log::info($update_img);
+        $update=[
+            "name"=>$request["name"],
+            "name_en"=>$request["name_en"],
+            "price"=>$request["price"],
+            "count"=>$request["count"],
+            "introduction"=>$request["introduction"],
+            "introduction_en"=>$request["introduction_en"],
+            "status"=>$request['open_status'],
+        ];
+        $del_img_arrray=[];
+        if($request["del_img_group"]!==null){
+            $del_img_arrray=explode(",",$request["del_img_group"]);
+        }
+
+        //後台判斷封面圖是否為刪除圖，不是就更新資料庫
+        if($request["font_img"] !== "undefined"){
+            if(!Empty($del_img_arrray)){
+                foreach($del_img_arrray as $img){
+                    if($img == $request["font_img"]){
+                        return response()->json(["msg"=>"刪除圖不得為封面圖"]);
+                    }
+                }
             }
         }
-        
-        //
-        $updata=[
-            'status'=>($request['open_status'] == "1"?"1":"0"),
-            'id'=>$request['id'],
-            'name'=>$request['name'],
-            'name_en'=>$request['name_en'],
-            'count'=>$request['count'],
-            'price'=>$request['price'],
-            'introduction'=>$request['introduction'],
-            'introduction_en'=>$request['introduction_en']
-        ];
-
-        $update_product = Merchandise::where('id',$request['id'])->update($updata);
-        if($update_product){
+        //新增圖片這裡做
+        if(count($_FILES)>0){
+            foreach($_FILES as $key=>$file){
+                if(!Empty($del_img_arrray)){
+                    foreach($del_img_arrray as $img){
+                        if($key !== $img){
+                            $update_img=$this->saveimg($file,$key,$request['target_id'],$request->$key);
+                        }else{
+                            log::info("save_img_pass");
+                        }
+                    }
+                }else{
+                    $update_img=$this->saveimg($file,$key,$request['target_id'],$request->$key);
+                    log::info($update_img);
+                }
+            }
+        }
+        //有要刪除圖片這裡做
+        foreach($del_img_arrray as $img){
+            $del_img_result = $this->del_img($request["target_id"],$img);
+            log::info($del_img_result);
+        }
+        if($request["font_img"]!=="undefined"){
+            $font_img=ProductAblum::where("merchandise_id",$request["target_id"])->where("photo_order",$request["font_img"])->first();
+            $update=[
+                "name"=>$request["name"],
+                "name_en"=>$request["name_en"],
+                "price"=>$request["price"],
+                "count"=>$request["count"],
+                "introduction"=>$request["introduction"],
+                "introduction_en"=>$request["introduction_en"],
+                "status"=>(isset($request['open_status'])?"1":"0"),
+                "photo"=>$font_img["photo_name"],
+            ];
+        }
+        $update_font_img = Merchandise::where("id",$request['target_id'])->update($update);
+        //回傳更新狀態
+        if($update_font_img){
             log::info("success");
             $data=[
                 "status"=>'200',
                 "mag"=>'update_success',
             ];
         }else{
-            log::info("fail");
-            $data=[
-                "status"=>'500',
-                "mag"=>'update_fail',
-            ];       
-        }
+                log::info("fail");
+                $data=[
+                    "status"=>'500',
+                    "mag"=>'update_fail'
+                ];       
+            }
         return response()->json(['data'=>$data]);
-
     }
 
     public function destroy(Merchandise $Merchandise)
@@ -185,9 +224,8 @@ class MerchandiseController extends Controller
         }else{
             //判斷更新圖片這裡做
                 $search_img=ProductAblum::where('merchandise_id',$id)->where("photo_order",$img_order)->first();
-
                 if($search_img){
-
+                    // 該商品該圖片已有資料就刪除舊圖片
                     $del_img=unlink(base_path('public/product_img/').$search_img["photo_name"]);
                     $data=[
                         "photo_name"=>$file_name,
@@ -195,7 +233,7 @@ class MerchandiseController extends Controller
                     ];
                     log::warning($search_img);
                     log::warning($data);
-
+                    //更新商品相簿並新增圖片
                     $update=ProductAblum::find($search_img['id'])->update(["photo_name"=>$file_name,
                     "photo_origin_name"=>$img['name']]);
                     $file->move(base_path('public/product_img/'),$file_name);
@@ -223,7 +261,23 @@ class MerchandiseController extends Controller
         return  $response_data;
 
     }
-    //封面圖片路徑
+    //刪除圖片
+    public function del_img($id,$file){
+        $search_img = ProductAblum::where("merchandise_id",$id)->where("photo_order",$file);
+        $search_img_result = $search_img->first(); 
+        if($search_img_result){
+            $Merchandise_img = Merchandise::where("id",$id)->select("photo")->first();
+            if($Merchandise_img["photo"] == $search_img_result["photo_name"]){
+                Merchandise::where("id",$id)->update(["photo"=>"default_img.jpeg"]);
+            }
+            $search_img->delete();
+            unlink(base_path('public/product_img/').$search_img_result["photo_name"]);
+            return $search_img_result;
+        }
+         return "del_image_pass";        
+    }
+
+    //取得封面圖片路徑
     public function img_route($photo){
         $img_route ="" ;
         if($photo == "default_img.jpeg"){

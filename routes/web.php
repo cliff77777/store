@@ -50,12 +50,16 @@ Route::group(['prefix'=>'merchandise'],function(){
     //新增商品
     Route::get('/create',[MerchandiseController::class,'createProductPage']);
     Route::post('/create_product_process',[MerchandiseController::class,'createProductProcess']);
-
-    Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
-
-    // Route::get('/','MerchandiseController@productIndex');
+    //修改商品
     Route::get('/edit/{id}',[MerchandiseController::class,'edit']);
     Route::post('/product_update',[MerchandiseController::class,'productUpdateProcess']);
+    Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
+    //刪除商品
+    Route::post('/del_product',[MerchandiseController::class,'editProductProcess']);
+
+
+
+    // Route::get('/','MerchandiseController@productIndex');
 
     Route::post('/buy','MerchandiseController@productBuy');
 
