@@ -51,8 +51,6 @@
 
 
         <script>
-            var myModal = document.getElementById('del_modal')
-
             toastr.options = {
                 // 參數設定[註1]
                 "closeButton": false, // 顯示關閉按鈕
@@ -83,18 +81,33 @@
             })
             $("#confirm_del").on('click', function() {
                 var product_id = $(this).attr('data-id');
+
+                console.log({
+                    "targer_id": product_id,
+                    "type": "del_product"
+                });
+
                 $.ajax({
                     type: 'post',
-                    url: '{{ url('merchandise/product_update') }}',
+                    url: '{{ url('merchandise/del_product') }}',
                     dataType: "json",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                    data: {
+                        "target_id": product_id,
+                        "type": "del_product"
+                    },
                     headers: {
                         'X-CSRF-Token': '{{ csrf_token() }}'
                     },
                     success: function(res) {
-
+                        let status = res['data']['status'];
+                        if (status == "200") {
+                            toastr.success("修改成功");
+                            window.setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            toastr.error("修改失敗");
+                        }
                     },
                     error: function(fail) {}
                 });

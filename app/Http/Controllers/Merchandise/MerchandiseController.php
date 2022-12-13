@@ -7,20 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Validator; //驗證器
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
 // use Log;
+
 // model
 use App\Models\Merchandise;
 use App\Models\ProductAblum;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Mockery\Undefined;
+use PhpParser\Node\Stmt\TryCatch;
 
 class MerchandiseController extends Controller
 {   
     //商品列表
     public function merchandiseList()
     {
-        $get_data = Merchandise::get();
+        $get_data = Merchandise::where("valid","1")->get();
         foreach($get_data as $key=>$value){
             $photo=$value['photo'];
             $img_route=$this->img_route($photo);
@@ -91,7 +93,31 @@ class MerchandiseController extends Controller
 
         return response()->json($response_data);
     }
+    //軟刪除
+    public function softDel(Request $request){
+        // dd($request['target_id']);
+        $data=[
+            "status"=>'500',
+            "mag"=>'faild'
+        ];  
+        $search_product=Merchandise::where("id",$request['target_id']);
+        if($search_product->first()){
+            log::info(['delete_product'=>$search_product->first()['name']]);
+            $soft_del_prod=$search_product->update([
+                "valid"=>"0",
+                "status"=>"0",
+            ]);
+            $data=[
+                "status"=>'200',
+                "mag"=>'success'
+            ];  
+         return response()->json(['data'=>$data]);
+        }
 
+        return response()->json(['data'=>$data]);
+
+
+    }
     public function store(Request $request)
     {
         //

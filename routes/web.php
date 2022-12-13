@@ -55,7 +55,7 @@ Route::group(['prefix'=>'merchandise'],function(){
     Route::post('/product_update',[MerchandiseController::class,'productUpdateProcess']);
     Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
     //刪除商品
-    Route::post('/del_product',[MerchandiseController::class,'editProductProcess']);
+    Route::post('/del_product',[MerchandiseController::class,'softDel']);
 
 
 
