@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Merchandise\MerchandiseController;
+use App\Http\Controllers\HomePage\HomePageController;
 
 
 
@@ -20,11 +21,14 @@ use App\Http\Controllers\Merchandise\MerchandiseController;
 |
 */
 
+Route::group(['prefix'=>'homepage'],function(){
+    //首頁
+    Route::get('/index',[HomePageController::class,'index'])->name('home_page');
+});
 
 Route::group(['prefix'=>'dashboard'],function(){
     //儀錶板
     Route::get('/index',[DashboardController::class,'index'])->name('dashboard');
-
 });
 
 Route::group(['prefix'=>'user'],function(){
@@ -57,9 +61,10 @@ Route::group(['prefix'=>'merchandise'],function(){
     //刪除商品
     Route::post('/del_product',[MerchandiseController::class,'softDel']);
 
+    Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
 
-
-    // Route::get('/','MerchandiseController@productIndex');
+    //商品中心
+    Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
 
     Route::post('/buy','MerchandiseController@productBuy');
 

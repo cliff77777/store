@@ -9,7 +9,7 @@
                 @foreach ($data as $key => $value)
                     <div class="col">
                         <div class="card " style="width: 18rem;">
-                            <img src="{{ $value['photo'] }}"
+                            <img src="{{ asset($value['photo']) }}"
                                 class="card-img-top {{ $value['status'] == '1' ?: 'img_opacity02' }}" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">商品名稱:{{ $value['name'] }}</h5>

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\user;
-
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Psr7\Request;
 use Validator; //驗證器
@@ -153,6 +151,7 @@ class UserAuthController extends Controller
             'email'=>[
                'required',
                'email',
+               'unique:users,email' //unique 確保唯一性
             ],
             'password'=>[
                'required',

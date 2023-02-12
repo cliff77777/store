@@ -118,6 +118,36 @@ class MerchandiseController extends Controller
 
 
     }
+
+    //商品中心
+    public function MerchandiseCenter(Request $request){
+        $get_data=Merchandise::where("status","1")->where("valid","1")->get();
+        foreach($get_data as $key=>$value){
+            $photo=$value['photo'];
+            $img_route=$this->img_route($photo);
+            $get_data[$key]['photo'] = $img_route;
+        }
+        // log::info($get_data->toArray());
+        return view('Merchandise.MerchandiseCenter_index',["data"=>$get_data]);
+    }
+
+    //商品詳細資料購買頁面
+    public function merchandise_index($id){
+        $img_url=[];
+        $get_data=Merchandise::where('id',$id)->first();
+        $getPhoto=ProductAblum::where('merchandise_id',$id)->get();
+        foreach($getPhoto as $key=>$value){
+            $url=$this->img_route($value['photo_name']);
+            $img_url[$key]=$url;
+        }
+        log::info($img_url);
+
+        
+        
+        return view('Merchandise.Merchandise_index',["img_url"=>$img_url,'data'=>$get_data]);
+    }
+
+
     public function store(Request $request)
     {
         //
@@ -306,10 +336,11 @@ class MerchandiseController extends Controller
     //取得封面圖片路徑
     public function img_route($photo){
         $img_route ="" ;
+        
         if($photo == "default_img.jpeg"){
-            $img_route="../../../public/img/default_img.jpeg";
+            $img_route="/img/default_img.jpeg";
         }else{
-            $img_route = "../../../public/product_img/".$photo;
+            $img_route = "/product_img/".$photo;
         }
         return $img_route;
     }

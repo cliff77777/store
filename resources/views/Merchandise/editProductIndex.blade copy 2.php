@@ -51,7 +51,7 @@
                     <div class="">
                         <label for="floatingInput">商品封面圖</label>
                     </div>
-                    <img class="imgupload  mt-2" id="blah" src="{{ asset($data['photo']) }}" alt="your image"
+                    <img class="imgupload  mt-2" id="blah" src="{{ $data['photo'] }}" alt="your image"
                         width="300" />
                 </div>
                 <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
@@ -62,8 +62,7 @@
                                     onchange="readURL(this,'#blah{{ $y }}');" id="photo{{ $y }}"
                                     name="photo{{ $y }}">
                                 <img class="imgupload" id="blah{{ $y }}" alt="your image" width="300"
-                                    src="{{ asset($photo_ablum[$i]['rotue']) }}"
-                                    onclick="showInput(photo{{ $y }})" />
+                                    src="{{ $photo_ablum[$i]['rotue'] }}" onclick="showInput(photo{{ $y }})" />
                                 <div class="">
                                     <label for="photo{{ $y }}">商品圖{{ $y }}:
                                         <span>
