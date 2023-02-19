@@ -19,13 +19,13 @@ class AuthUserMiddleware
     public function handle(Request $request, Closure $next)
     {
         LOG::notice("檢查權限");
-        $user_id=session()->get('user_id');
-        if(!empty($user_id)){
-            LOG::notice($user_id);
+        $user_data=session()->get('user_data');
+        if(!empty($user_data)){
+            LOG::notice($user_data);
 
-            $get_user_role_status=User::findOrFail($user_id);
+            $get_user=User::findOrFail($user_data->id);
     
-            if($get_user_role_status->type =="A"){
+            if($get_user->type =="a"){
                 LOG::notice("有權限");
                 return $next($request);
             }
