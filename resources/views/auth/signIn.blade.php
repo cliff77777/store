@@ -75,12 +75,12 @@
             <h1 class="h3 mb-3 fw-normal">{{ $title }}</h1>
             <div class="form-floating">
                 <input type="email" class="form-control" id="floatingInput" placeholder="請輸入信箱"
-                    value="{{ old('email') }}">
+                    value="{{ old('email') }}" name="email">
                 <label for="floatingInput">信箱</label>
             </div>
             <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="請輸入密碼"
-                    value="{{ old('password') }}">
+                    value="{{ old('password') }}" name="password">
                 <label for="floatingPassword">密碼</label>
             </div>
 
@@ -95,9 +95,35 @@
                 <a type="" href="sign_up" class="">註冊</a>
             </div>
         </form>
+        @if (session('message'))
+            <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="messageModalLabel">訊息提示</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ session('message') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </main>
-
-
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#messageModal').modal('show');
+        setTimeout(function() {
+            $('#messageModal').modal('hide');
+        }, 5000);
+    });
+</script>
 
 </html>

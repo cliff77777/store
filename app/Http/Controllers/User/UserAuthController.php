@@ -8,11 +8,20 @@ use Hash;
 use Mail;
 use DB;
 
+//Services
+use App\Services\ValidServices;
+
 //models
 use App\Models\User ;
 
 class UserAuthController extends Controller
 {
+   protected $ValidServices;
+   public function __construct(
+      ValidServices $ValidServices
+   ){
+      $this->ValidServices=$ValidServices;
+   }
 //會員註冊頁面
    public function signUpPage(){
 
@@ -34,7 +43,7 @@ class UserAuthController extends Controller
 
       // 送去做註冊資料驗證規則
       $type="sign_up";
-      $valid_result=$this->valitator_user($type,$get_data);
+      $valid_result=$this->ValidServices->valid_use($type,$get_data);
 
       if($valid_result=="success"){
          log::notice("user data valitor success");
@@ -61,7 +70,7 @@ class UserAuthController extends Controller
          }
       ); 
       //寄出成功郵件後回到註冊頁面
-         return redirect('/user/auth/sign_up');
+         return redirect()->route('signInPage')->with('message', '恭喜您註冊成功，請重新登入');
       }
    }
 // 會員登入頁面
@@ -70,7 +79,6 @@ class UserAuthController extends Controller
       $binding=[
          'title'=>'會員登入',
       ];
-
       return view('auth.signIn',$binding);
    }
 
@@ -84,16 +92,14 @@ class UserAuthController extends Controller
       ];
       
       $data=request()->all();
-      log::info($data);
+      log::warning($data);
       $type="sign_in";
-      $valid_result=$this->valitator_user($type,$data);
+      $valid_result=$this->ValidServices->valid_use($type,$data);
 
       if(is_string($valid_result)){
          log::info($valid_result);
          //撈取檢查使用者帳號
          $user=User::where('email',$data['email'])->first();
-
-         // log::notice(DB::getQueryLog());
 
          //檢查是帳號是否有被註冊
          if(empty($user)){
@@ -105,10 +111,9 @@ class UserAuthController extends Controller
                log::info($error_message);
             return redirect('/user/auth/sign_in')->withErrors($error_message)->withInput();
          }else{
-            log::notice("有照到帳號");
+            log::notice("有找到帳號");
             log::notice($user);
          }
-
          //檢查使用者輸入密碼與資料庫的密碼比對
          $check_password=Hash::check($data['password'],$user->password);
          if(!$check_password){
@@ -121,7 +126,7 @@ class UserAuthController extends Controller
                return redirect('/user/auth/sign_in')->withErrors($error_message)->withInput();
             }else{
                log::info("密碼正確");
-               session()->put('user_id',$user->id);
+               session()->put('user_data',$user);
                //重新導回請求頁面，如沒有則導回首頁
                return redirect()->intended('/dashboard/index');
                // return redirect('/dashboard/index');
@@ -135,66 +140,8 @@ class UserAuthController extends Controller
    }
 //會員登出
    public function signOut(){
-      session()->forget('user_id');
+      session()->forget('user_data');
        return redirect()->intended('/dashboard/index');
    }
 
-
-
-
-
-   //laravel 驗證機制
-   private function valitator_user ($type,$data){
-      if($type == "sign_up"){
-         //註冊資料驗證規則
-         $rules=[
-            'email'=>[
-               'required',
-               'email',
-               'unique:users,email' //unique 確保唯一性
-            ],
-            'password'=>[
-               'required',
-               'min:4',
-            ],
-            'check_password'=>[
-               'required',
-               'same:password',
-            ],
-            'name'=>[
-               'required',
-            ]
-         ];
-         //丟去做判斷
-         $valitator = Validator::make($data,$rules);
-         if($valitator->fails()){
-            LOG::INFO("註冊驗證第一步:失敗");
-            return redirect('/user/auth/sign_up')->withErrors($valitator)->withInput();
-         }else{
-            LOG::INFO("註冊第一步:驗證成功");
-            return "success";
-         }
-      }else if($type == "sign_in"){
-         //登入欄位驗證
-         $rules=[
-            'email'=>[
-               'required',
-               'email',
-            ],
-            'password'=>[
-               'required',
-               'min:4',
-            ]
-         ];
-         //丟去做判斷
-         $valitator = Validator::make($data,$rules);
-         if($valitator->fails()){
-            LOG::INFO("登入驗證第一步:失敗");
-            return redirect('/user/auth/sign_in')->withErrors($valitator)->withInput();
-         }else{
-            LOG::INFO("登入驗證第一步:成功");
-            return "完成登入欄位驗證";
-         }
-      }      
-   }
 }

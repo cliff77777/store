@@ -37,35 +37,35 @@ Route::group(['prefix'=>'user'],function(){
         // 註冊頁面
         Route::get('/sign_up',[UserAuthController::class,'signUpPage'])->name('signUpPage');
         // 增加會員
-        Route::post('/addUser','App\Http\controllers\user\UserAuthController@addUser');
+        Route::post('/addUser','App\Http\Controllers\user\UserAuthController@addUser');
         // Route::get('/sign_up','App\Http\controllers\user\UserAuthController@signUpPage');
 
         //登入頁面
-        Route::get('/sign_in','App\Http\controllers\user\UserAuthController@signIn')->name('signInPage');
-        Route::post('/signInHandle','App\Http\controllers\user\UserAuthController@signInHandle');
-        Route::get('/sign_out','App\Http\controllers\user\UserAuthController@signOut');
+        Route::get('/sign_in',[UserAuthController::class,'signIn'])->name('signInPage');
+        Route::post('/signInHandle',[UserAuthController::class,'signInHandle']);
+        Route::get('/sign_out',[UserAuthController::class,'signOut']);
 
     });
 });
 
 Route::group(['prefix'=>'merchandise'],function(){
-    //商品頁面
-    Route::get('/',[MerchandiseController::class,'merchandiseList']);
-    //新增商品
-    Route::get('/create',[MerchandiseController::class,'createProductPage']);
-    Route::post('/create_product_process',[MerchandiseController::class,'createProductProcess']);
-    //修改商品
-    Route::get('/edit/{id}',[MerchandiseController::class,'edit']);
-    Route::post('/product_update',[MerchandiseController::class,'productUpdateProcess']);
-    Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
-    //刪除商品
-    Route::post('/del_product',[MerchandiseController::class,'softDel']);
-
-    Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
-
+        //權限中介層
+    Route::group(['middleware'=>['user.auth.admin']],function(){
+        //商品頁面
+        Route::get('/',[MerchandiseController::class,'merchandiseList']);
+        //新增商品
+        Route::get('/create',[MerchandiseController::class,'createProductPage']);
+        Route::post('/create_product_process',[MerchandiseController::class,'createProductProcess']);
+        //修改商品
+        Route::get('/edit/{id}',[MerchandiseController::class,'edit']);
+        Route::post('/product_update',[MerchandiseController::class,'productUpdateProcess']);
+        Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
+        //刪除商品
+        Route::post('/del_product',[MerchandiseController::class,'softDel']);
+        Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
+    }); 
     //商品中心
     Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
-
     Route::post('/buy','MerchandiseController@productBuy');
 
 

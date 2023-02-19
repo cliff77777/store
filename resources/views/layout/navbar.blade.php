@@ -25,22 +25,26 @@
                                 <li><a class="dropdown-item" href="">最新商品</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                商品管理
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" href="{{ url('merchandise/create') }}">新增商品</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="{{ url('merchandise/') }}">商品列表</a></li>
-                            </ul>
-                        </li>
+                        @if (isset(session()->get('user_data')->type) && session()->get('user_data')->type == 'a')
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    商品管理
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                                    <li><a class="dropdown-item" href="{{ url('merchandise/create') }}">新增商品</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ url('merchandise/') }}">商品列表</a></li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
-                    @if (session()->has('user_id'))
-                        <a class="nav-link" aria-current="page" href="{{ url('user/auth/sign_out') }}">登出</a>
+                    @if (session()->has('user_data'))
+                        <div class="text-light">Hello!! {{ session()->get('user_data')->name }} 歡迎您回來</div>
+                        <a class="nav-link text-danger" aria-current="page"
+                            href="{{ url('user/auth/sign_out') }}">登出</a>
                     @else
                         <a class="nav-link text-light" aria-current="page" href="{{ url('user/auth/sign_in') }}">登入</a>
                         <a class="nav-link text-light" aria-current="page" href="{{ url('user/auth/sign_up') }}">註冊</a>
