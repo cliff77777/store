@@ -2,7 +2,7 @@
 @section('title', '商品列表')
 <div class="bg-secondary">
     @section('content')
-        <div class="container content " style="background:white">
+        <div class="container content ">
             <h2 class="my-3 py-3">商品列表</h2>
             {{-- {{dd($data->toArray())}} --}}
             <div class="row row-cols-1 row-cols-md-4 g-4 ">

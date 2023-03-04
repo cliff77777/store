@@ -2,7 +2,7 @@
 @section('title', '編輯商品頁面')
 <div class="bg-secondary">
     @section('content')
-        <div class="container content" style="background:white">
+        <div class="container content">
             <h2 class="my-3 py-3">修改商品</h2>
             {{-- {{ dd($data) }} --}}
             <form action="javascript:void(0);">

@@ -57,6 +57,6 @@ class ValidServices{
                LOG::INFO("登入驗證第一步:成功");
                return "完成登入欄位驗證";
             }
-         }     
+         }
     }
 }

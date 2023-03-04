@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <html lang="zh-TW">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
@@ -89,7 +88,6 @@
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
             </div> --}}
-            @include('componets.validationErrorMessage')
             <div class="">
                 <button class="w-100 btn btn-lg btn-primary" type="submit">登入</button>
                 <a type="" href="sign_up" class="">註冊</a>

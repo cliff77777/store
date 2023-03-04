@@ -6,19 +6,24 @@
     <meta charset="UTF-8">
     <html lang="zh-TW">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    {{-- <!-- 引入 fontawesome 的 CSS 檔案 -->
+    <link rel="stylesheet" href="https://kit.fontawesome.com/5b26dbc4c8.css" crossorigin="anonymous"> --}}
+    <!-- 引入 fontawesome 的 JavaScript 檔案 -->
+    <script src="https://kit.fontawesome.com/5b26dbc4c8.js" crossorigin="anonymous"></script>
+
+
     <title>@yield('title')</title>
 </head>
 
 <body>
-    <div class="wrapper bg-light">
-        @include('layout.navbar')
+    @include('layout.navbar')
+    <div class="bg-secondary">
         @yield('content')
     </div>
-    @include('layout.footer')
+    {{-- @include('layout.footer') --}}
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -30,5 +35,11 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"
     integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- toastr v2.1.4 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
 </html>

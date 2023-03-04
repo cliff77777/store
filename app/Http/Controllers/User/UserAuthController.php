@@ -141,7 +141,7 @@ class UserAuthController extends Controller
 //會員登出
    public function signOut(){
       session()->forget('user_data');
-       return redirect()->intended('/dashboard/index');
+       return redirect('/dashboard/index');
    }
 
 }

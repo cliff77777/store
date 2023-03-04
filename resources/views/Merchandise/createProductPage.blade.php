@@ -2,7 +2,7 @@
 @section('title', '新增商品')
 <div class="bg-secondary">
     @section('content')
-        <div class="container content" style="background:white">
+        <div class="container content">
             <h2 class="my-3 py-3">新增商品</h2>
             {{-- <form action="{{url("merchandise/create_product_process")}}" id="create_form" method="post"> --}}
             <form action="javascript:void(0);" id="create_form" method="post">
@@ -81,7 +81,6 @@
         <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-
 
         <script>
             toastr.options = {

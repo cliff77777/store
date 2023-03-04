@@ -1,28 +1,24 @@
 @extends('layout.master')
 @section('title', '產品中心')
-<div class="bg-secondary">
-    @section('content')
-        {{-- {{ dd($data) }} --}}
-        <div class="container content " style="background:white">
-            <h2 class="my-3 py-3">產品中心</h2>
-            <div class="card-group">
-                @foreach ($data as $key => $value)
-                    <div class="card">
-                        <img src="{{ asset($value['photo']) }}" style="height:180px;"
-                            class="card-img-top img-thumbnail img-fluid" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $value['name'] }}</h5>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary detail_btn" data-id="{{ $value['id'] }}">立即搶購</a>
-                            {{-- <small class="-muted">Last updated 3 mins ago</small> --}}
-                        </div>
+@section('content')
+    <div class="container content ">
+        <h2 class="my-3 py-5">產品中心</h2>
+        <div class="card-group">
+            @foreach ($data as $key => $value)
+                <div class="card">
+                    <img src="{{ asset($value['photo']) }}" style="height:180px;" class="card-img-top img-thumbnail img-fluid"
+                        alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $value['name'] }}</h5>
                     </div>
-                @endforeach
-            </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary detail_btn" data-id="{{ $value['id'] }}">立即搶購</a>
+                        {{-- <small class="-muted">Last updated 3 mins ago</small> --}}
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
-
     {{-- 刪除modal --}}
     @include('layout.alert')
     <!-- toastr v2.1.4 -->

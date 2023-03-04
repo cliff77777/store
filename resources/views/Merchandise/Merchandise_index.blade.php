@@ -5,7 +5,7 @@
         <aside>
 
         </aside>
-        <div class="container content" style="background:white">
+        <div class="container content">
             <h2 class="my-3 py-3">{{ $data['name '] }}</h2>
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">

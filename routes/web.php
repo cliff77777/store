@@ -29,6 +29,9 @@ Route::group(['prefix'=>'homepage'],function(){
 Route::group(['prefix'=>'dashboard'],function(){
     //儀錶板
     Route::get('/index',[DashboardController::class,'index'])->name('dashboard');
+    Route::post('/user_detail',[DashboardController::class,'detail'])->name('userdetail');
+    Route::post('/user_update',[DashboardController::class,'user_update'])->name('userupdate');
+
 });
 
 Route::group(['prefix'=>'user'],function(){
@@ -44,7 +47,6 @@ Route::group(['prefix'=>'user'],function(){
         Route::get('/sign_in',[UserAuthController::class,'signIn'])->name('signInPage');
         Route::post('/signInHandle',[UserAuthController::class,'signInHandle']);
         Route::get('/sign_out',[UserAuthController::class,'signOut']);
-
     });
 });
 
@@ -62,12 +64,11 @@ Route::group(['prefix'=>'merchandise'],function(){
         Route::post('/edit_product_process',[MerchandiseController::class,'editProductProcess']);
         //刪除商品
         Route::post('/del_product',[MerchandiseController::class,'softDel']);
-        Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
     }); 
     //商品中心
     Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
     Route::post('/buy','MerchandiseController@productBuy');
-
+    Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
 
 
 });
