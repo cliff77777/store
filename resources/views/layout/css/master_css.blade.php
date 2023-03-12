@@ -37,4 +37,11 @@
         max-height: 150px;
         margin: 5px;
     }
+
+    .badge {
+        transform: translate(-50%, -50%);
+        font-size: 0.75rem;
+        min-width: 1.25rem;
+        padding: 0.1rem 0.5rem;
+    }
 </style>

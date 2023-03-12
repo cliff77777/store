@@ -236,14 +236,43 @@
                         var method = element.getAttribute("method");
                         var count = document.getElementById('count');
 
+                        // 加入購物車
                         if (method == "add_cart") {
-                            var save_cart_data = JSON.stringify({
-                                "product_id": {{ $data['id'] }},
-                                'count': count.value
-                            });
+                            var product_id = {{ $data['id'] }}
+                            //取得localstorage 購物車資料
+                            var gat_cart_content = JSON.parse(localStorage.getItem('add_cart'))
+                            //準備要存的資料
+                            var save_product = {
+                                "product_id": product_id,
+                                'count': count.value,
+                            }
+
+                            if (gat_cart_content) {
+                                //全部要存的資料
+                                var DBstorage = gat_cart_content;
+                                //將一樣的product_id一起處理
+                                for (var key in gat_cart_content) {
+                                    if (key == product_id) {
+                                        DBstorage[key].count = parseInt(gat_cart_content[key].count) +
+                                            parseInt(count.value)
+                                    } else {
+                                        //否則就另外存
+                                        DBstorage[product_id] = save_product
+                                    }
+                                }
+                            } else {
+                                //沒有購物車就存新的
+                                var DBstorage = {};
+                                DBstorage[product_id] = save_product;
+                            }
+                            var save_cart_data = JSON.stringify(DBstorage);
                             // 儲存資料
                             localStorage.setItem('add_cart', save_cart_data)
-                            console.log("localStorage");
+                            //點後抓localstorage 數量
+                            var cart_btn_count = document.getElementById("cart_btn_count")
+                            var objectLength = Object.keys(gat_cart_content).length;
+                            cart_btn_count.textContent = objectLength
+
                         }
 
 
