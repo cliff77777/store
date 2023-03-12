@@ -17,7 +17,7 @@
                     <input type="text" class="form-control" id="name" placeholder="商品名稱" required name="name">
                     <label for="name">商品名稱</label>
                 </div>
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-3" style="display:none;">
                     <input type="text" class="form-control" id="name_en" placeholder="商品名稱(英文)" name="name_en">
                     <label for="name_en">商品名稱(英文)</label>
                 </div>
@@ -32,13 +32,15 @@
                     <label for="count">商品數量</label>
                 </div>
                 <span class="ns_font">(必填)</span>
+                <label for="introduction">商品介紹</label>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" placeholder="商品介紹" id="introduction" style="height: 100px" required name="introduction"></textarea>
-                    <label for="introduction">商品介紹</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="商品介紹(英文)" id="introduction_en" style="height: 100px" name="introduction_en"></textarea>
+                <div class="" style="display:none;">
                     <label for="introduction_en">商品介紹(英文)</label>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="商品介紹(英文)" id="introduction_en" style="height: 100px" name="introduction_en"></textarea>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="file" class="form-control img_file" onchange="readURL(this,'#blah1');" id="photo1"
@@ -59,8 +61,8 @@
                     <img class="imgupload d-none mt-2" id="blah3" src="#" alt="your image" width="300" />
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="file" class="form-control img_file" onchange="readURL(this,'#blah4');" id="photo4"
-                        name="photo4">
+                    <input type="file" class="form-control img_file" onchange="readURL(this,'#blah4');"
+                        id="photo4" name="photo4">
                     <label for="floatingInput">商品圖四</label>
                     <img class="imgupload d-none mt-2" id="blah4" src="#" alt="your image" width="300" />
                 </div>
@@ -82,7 +84,12 @@
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
+        <link rel="stylesheet" href="{{ asset('vendor/ckeditor/ckeditor.css') }}">
+        <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
         <script>
+            CKEDITOR.replace('introduction');
+            CKEDITOR.replace('introduction_en');
+
             toastr.options = {
                 // 參數設定[註1]
                 "closeButton": false, // 顯示關閉按鈕
@@ -101,8 +108,6 @@
                 "showMethod": "fadeIn", // 顯示動畫效果
                 "hideMethod": "fadeOut" // 隱藏動畫效果
             }
-
-
             //選擇圖片即時顯示的js
             function readURL(input, blash) {
                 if (input.files && input.files[0]) {
@@ -116,6 +121,7 @@
             }
 
             $(document).ready(function() {
+
                 //控制上架功能文字
                 $("#open_status").on('click', function() {
                     var switch_status = $("#open_status").prop("checked");

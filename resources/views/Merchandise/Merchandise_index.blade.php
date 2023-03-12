@@ -1,12 +1,54 @@
 @extends('layout.master')
+<style>
+    .exmaple {
+        border-radius: 3%;
+        box-shadow: 0 0 20px 10px rgba(102, 100, 100, 0.5);
+    }
+
+    .carousel-item img {
+        width: 1000px;
+        height: 500px;
+        object-fit: cover;
+        transition: all .5s ease;
+    }
+
+    .carousel-item.active img {
+        transform: scale(1.1);
+    }
+
+    .text-content {
+        background-color: rgb(227, 223, 223);
+        width: 900px;
+        margin: 50px auto;
+        border-radius: 3%;
+        text-align: center;
+        min-height: 600px;
+    }
+
+    .text-content p {
+        margin: 20px;
+        padding: 10px
+    }
+
+    .text-content img {
+        max-width: 600px;
+        margin: 20px;
+        border-radius: 1%;
+    }
+
+    .shop_area {
+        width: 900px;
+        margin: 50px auto;
+        justify-content: end
+    }
+</style>
 @section('title', '商品頁面')
 <div class="bg-secondary">
     @section('content')
-        <aside>
-
-        </aside>
-        <div class="container content">
-            <h2 class="my-3 py-3">{{ $data['name '] }}</h2>
+        <div class="container content" style="margin-top:50px">
+            <div style="text-align:center;">
+                <h2 class="p-5">{{ $data['name'] }}</h2>
+            </div>
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     @foreach ($img_url as $key => $value)
@@ -15,27 +57,57 @@
                             aria-current="true" aria-label="Slide{{ $key }}"></button>
                     @endforeach
                 </div>
-                <div class="carousel-inner mx-auto" style="width:40%;height:40%">
+                <div class="carousel-inner mx-auto exmaple" style="max-width:1000px;">
                     @foreach ($img_url as $value)
                         <div class="carousel-item @if ($loop->first) active @endif " data-bs-interval="4000">
-                            <img src="{{ asset($value) }}" class="d-block rounded " alt="..."
-                                style="width:100%;height:100%">
+                            <img src="{{ asset($value) }}" class="d-block rounded " alt="...">
                         </div>
                     @endforeach
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="prev" style="width:50%;">
+                    data-bs-slide="prev" style="width:40%;">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="next" style="width:50%;">
+                    data-bs-slide="next" style="width:40%;">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-            <div class=""></div>
+            <div class="shop_area d-flex align-items-center">
+                <input type="number" class="form-control me-2" placeholder="購買數量" style="width:150px;" id="count"
+                    method="count">
+                <button class="btn btn-success me-2 shopBtn" type="button" method="buy_now" id="buy_now">
+                    <i class="fa-solid fa-truck-fast"></i>立即購買</button>
+                <button class="btn btn-primary me-2 shopBtn" type="button" method="add_cart" id="add_cart">
+                    <i class="fa-sharp fa-solid fa-cart-plus m-1"></i>加入購物車</button>
+                <button class="btn btn-danger m2 shopBtn" id="add_focus" method="add_focus">
+                    <i class="fa-solid fa-heart-circle-plus"></i>加入關注</button>
+            </div>
+
+            <div class="text-content">
+                <p>
+                    圖片介紹:
+                </p>
+                <p>
+                    {{ $data['introduction'] }}
+                </p>
+                @foreach ($img_url as $value)
+                    <div class="">
+                        <img src="{{ asset($value) }}">
+                    </div>
+                @endforeach
+
+
+
+            </div>
         </div>
+
+
+
+
+
         <!-- toastr v2.1.4 -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -81,7 +153,7 @@
                         reader.readAsDataURL(productAlbum[i]);
                     }
                 }
-            }
+            };
 
             $(document).ready(function() {
                 //控制上架功能文字
@@ -96,22 +168,6 @@
 
                     }
                 })
-
-                //檢查欄位
-                // $("#create_form").validate({
-                //     rules: {
-                //         name: "required",
-                //         price: "required",
-                //         count: "required",
-                //         introduction: "required",
-                //     },
-                //     messages: {
-                //         name: "請輸入商品名稱",
-                //         price: "請輸入商品價格",
-                //         count: "請輸入商品數量",
-                //         introduction: "請輸入商品介紹",
-                //     }
-                // })
 
                 $("#edit_data_btn").click(function() {
                     var img = $("#photo")[0].files[0];
@@ -142,7 +198,7 @@
                             console.log(fail);
                         }
                     });
-                })
+                });
 
                 function upload_img(insert_id, upload_img) {
                     var formData = new FormData();
@@ -172,8 +228,47 @@
                             console.log(fail);
                         }
                     });
-                }
+                };
 
+                var shopBtn = document.querySelectorAll('.shopBtn');
+                shopBtn.forEach(element => {
+                    element.addEventListener('click', () => {
+                        var method = element.getAttribute("method");
+                        var count = document.getElementById('count');
+
+                        if (method == "add_cart") {
+                            var save_cart_data = JSON.stringify({
+                                "product_id": {{ $data['id'] }},
+                                'count': count.value
+                            });
+                            // 儲存資料
+                            localStorage.setItem('add_cart', save_cart_data)
+                            console.log("localStorage");
+                        }
+
+
+                        $.ajax({
+                            type: 'post',
+                            url: '{{ route('buySomething') }}',
+                            dataType: "json",
+                            data: {
+                                method: method,
+                                count: count.value,
+                                product_id: {{ $data['id'] }}
+                            },
+                            headers: {
+                                'X-CSRF-Token': '{{ csrf_token() }}'
+                            },
+                            success: function(res) {
+
+                            },
+                            error: function(fail) {
+                                console.log(fail);
+                            }
+                        });
+
+                    });
+                });
             })
         </script>
     @endsection

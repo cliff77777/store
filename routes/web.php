@@ -26,6 +26,8 @@ Route::group(['prefix'=>'homepage'],function(){
     Route::get('/index',[HomePageController::class,'index'])->name('home_page');
 });
 
+
+
 Route::group(['prefix'=>'dashboard'],function(){
     //儀錶板
     Route::get('/index',[DashboardController::class,'index'])->name('dashboard');
@@ -67,7 +69,7 @@ Route::group(['prefix'=>'merchandise'],function(){
     }); 
     //商品中心
     Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
-    Route::post('/buy','MerchandiseController@productBuy');
+    Route::post('/buy',[MerchandiseController::class,'buy'])->name('buySomething');
     Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
 
 

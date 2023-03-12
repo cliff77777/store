@@ -93,6 +93,7 @@
                 <a type="" href="sign_up" class="">註冊</a>
             </div>
         </form>
+        @include('componets.validationErrorMessage')
         @if (session('message'))
             <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel"
                 aria-hidden="true">

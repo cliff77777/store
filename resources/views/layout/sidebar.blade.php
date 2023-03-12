@@ -32,7 +32,7 @@
         }
     </style>
 </head>
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-secondary sidebar">
+<aside class="d-flex flex-column flex-shrink-0 p-3 text-white bg-secondary sidebar col-md-2">
     <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32">
         </svg>
@@ -78,7 +78,7 @@
         </li>
     </ul>
     <hr>
-</div>
+</aside>
 <script>
     //控制sidebar active 位置
     const links = document.querySelectorAll('.nav-link');

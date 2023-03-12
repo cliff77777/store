@@ -1,15 +1,16 @@
 @extends('layout.master')
 @section('title', $title)
+@include('layout.sidebar')
 @section('content')
-    @include('layout.sidebar')
-    <div class="container content">
-        <h1 class="my-5 py-5 ms-5">{{ $title }}</h1>
-        <div class="dashborad_body" id="dashboard_body" data-id="{{ $user }}" data-action="">
-            <div class="body_content ms-5" id="body_content">
+    <div class="row mt-3">
+        <div class="col-md-12 content">
+            <h1 class="my-5 py-2 ms-5">{{ $title }}</h1>
+            <div class="dashborad_body" id="dashboard_body" data-id="{{ $user }}" data-action="">
+                <div class="body_content ms-5" id="body_content">
+                </div>
             </div>
+            @include('componets.validationErrorMessage')
         </div>
-        @include('componets.validationErrorMessage')
-
     </div>
     <script>
         window.onload = () => {

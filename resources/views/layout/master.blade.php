@@ -19,9 +19,13 @@
 </head>
 
 <body>
-    @include('layout.navbar')
     <div class="bg-secondary">
-        @yield('content')
+        <div class="container">
+            <div class="row">
+                @include('layout.navbar')
+                @yield('content')
+            </div>
+        </div>
     </div>
     {{-- @include('layout.footer') --}}
 </body>

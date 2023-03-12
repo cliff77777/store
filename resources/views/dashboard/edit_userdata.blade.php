@@ -44,7 +44,8 @@
         <div class="mb-3 col-lg-3">
             <div class="mb-3">
                 <label for="phone" class="form-label">連絡電話</label>
-                <input type="phone" class="form-control edit_data" id="phone" disabled name="phone">
+                <input type="phone" class="form-control edit_data" id="phone" disabled name="phone"
+                    value={{ isset($all_data['phone']) ? $all_data['phone'] : '' }}>
                 <div id="phone_Help" class="form-text">連絡電話</div>
             </div>
         </div>
@@ -53,7 +54,8 @@
         <div class="mb-3 col-lg-6">
             <div class="mb-3">
                 <label for="id_address" class="form-label">戶籍地址</label>
-                <input type="text" class="form-control edit_data" id="id_address" disabled name="id_address">
+                <input type="text" class="form-control edit_data" id="id_address" disabled name="id_address"
+                    value={{ isset($all_data['id_address']) ? $all_data['id_address'] : '' }}>
                 <div id="id_address_Help" class="form-text">請輸入要修改的戶籍地址</div>
             </div>
         </div>
@@ -62,7 +64,8 @@
         <div class="mb-3 col-lg-6">
             <div class="mb-3">
                 <label for="live_address" class="form-label">居住地址</label>
-                <input type="text" class="form-control edit_data" id="live_address" disabled name="live_address">
+                <input type="text" class="form-control edit_data" id="live_address" disabled name="live_address"
+                    value={{ isset($all_data['live_address']) ? $all_data['live_address'] : '' }}>
                 <div id="live_address_Help" class="form-text">請輸入要修改的居住地址</div>
             </div>
         </div>

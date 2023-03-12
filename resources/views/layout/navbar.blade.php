@@ -1,5 +1,8 @@
-    <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
+            {{-- @php
+                $allData = session()->all();
+                print_r($allData);
+            @endphp --}}
             <div class="container-fluid">
                 <div class="navbar-brand disabled" href="#">商標放置區</div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -58,6 +61,8 @@
                         <a class="nav-link text-light" aria-current="page" href="{{ url('user/auth/sign_in') }}">登入</a>
                         <a class="nav-link text-light" aria-current="page" href="{{ url('user/auth/sign_up') }}">註冊</a>
                     @endif
+                    <button class="btn btn-success m-2" id="cart_btn"><i
+                            class="fa-solid fa-cart-shopping"></i></button>
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-success" type="submit">Search</button>
@@ -65,4 +70,17 @@
                 </div>
             </div>
         </nav>
-    </header>
+        <script>
+            window.onload = () => {
+                cart_btn = document.getElementById("cart_btn");
+
+                // showcart = () => {
+                //     cart_btn = document.getElementById("cart_btn");
+                //     console.log(cart_btn);
+                // }
+                cart_btn.addEventListener('click', () => {
+                    var cart_content = JSON.parse(localStorage.getItem('add_cart'));
+                    console.log(cart_content);
+                })
+            }
+        </script>

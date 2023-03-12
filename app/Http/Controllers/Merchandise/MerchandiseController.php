@@ -140,7 +140,7 @@ class MerchandiseController extends Controller
             $url=$this->img_route($value['photo_name']);
             $img_url[$key]=$url;
         }
-        log::info($img_url);
+        log::info($get_data->toArray());
 
         
         
@@ -343,5 +343,24 @@ class MerchandiseController extends Controller
             $img_route = "/product_img/".$photo;
         }
         return $img_route;
+    }
+
+    //買一些東西
+
+    public function buy(){
+
+        log::info(request()->all());
+        if(null !== (session()->get('user_data'))){
+            $get_user = session()->get('user_data');
+        }else{
+            $get_user = [
+                'name'=>'guest'
+            ];
+        }
+
+
+        log::warning($get_user);
+        log::info(session()->all());
+
     }
 }
