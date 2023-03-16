@@ -75,10 +75,14 @@ class DashboardController extends Controller
       case "order_history":
           break;
       case "shopping_cart":
+        $title ="購物車";
+        $response_html= view('dashboard.shopping_cart',["title"=>$title])->render();
+
           break;      
       case "my_favorite":
           break;      
       case "edit_userdata":
+        $title ="會員資料編輯";
         $all_data=[];
         $search_data=User::find($data['user_id']);
         $search_user_detail=UserDetail::where('user_id',$data['user_id'])->first();
@@ -87,7 +91,7 @@ class DashboardController extends Controller
           log::info($all_data);
         }
 
-        $response_html= view('dashboard.edit_userdata',["search_data"=>$search_data,"all_data"=>$all_data])->render();
+        $response_html= view('dashboard.edit_userdata',["search_data"=>$search_data,"all_data"=>$all_data,"title"=>$title])->render();
           break;
     }    
 

@@ -1,10 +1,9 @@
 @extends('layout.master')
 @section('title', $title)
-@include('layout.sidebar')
 @section('content')
-    <div class="row mt-3">
-        <div class="col-md-12 content">
-            <h1 class="my-5 py-2 ms-5">{{ $title }}</h1>
+    @include('layout.sidebar')
+    <div class="col-xl-12 col-lg-9 mt-3 mx-auto">
+        <div class="content ">
             <div class="dashborad_body" id="dashboard_body" data-id="{{ $user }}" data-action="">
                 <div class="body_content ms-5" id="body_content">
                 </div>
@@ -12,6 +11,7 @@
             @include('componets.validationErrorMessage')
         </div>
     </div>
+
     <script>
         window.onload = () => {
             toastr.options = {
@@ -32,6 +32,16 @@
                 "showMethod": "fadeIn", // 顯示動畫效果
                 "hideMethod": "fadeOut" // 隱藏動畫效果
             }
+            cart_btn = document.getElementById("cart_btn");
+            cart_btn.addEventListener('click', () => {
+                var cart_content = JSON.parse(localStorage.getItem('add_cart'));
+            })
+            //navbar自動抓localstorage 數量
+            var gat_cart_content = JSON.parse(localStorage.getItem('add_cart'))
+            var cart_btn_count = document.getElementById("cart_btn_count")
+            var objectLength = Object.keys(gat_cart_content).length;
+            cart_btn_count.textContent = objectLength
+
         }
         const order_list = document.getElementById("order_list");
         const aside = document.querySelectorAll(".aside");
@@ -60,6 +70,10 @@
                 },
                 success: function(data) {
                     body_content.innerHTML = data.html
+                    if (action == 'shopping_cart') {
+                        shopping_cart()
+
+                    }
                 },
                 error: function() {
 
@@ -67,6 +81,18 @@
             });
         };
 
+        // shopping_cart
+        var shopping_cart = () => {
+            var product_cart_list = document.getElementById('product_cart_list');
+            const cart = JSON.parse(localStorage.getItem("add_cart"));
+
+            for (let productId in cart) {
+                const product = cart[productId];
+                const productDiv = document.createElement("div");
+                productDiv.innerHTML = `Product ID: ${product.product_id} | Count: ${product.count}`;
+                product_cart_list.appendChild(productDiv);
+            }
+        }
 
         //檢查密碼是否正確
         var check_pass = () => {

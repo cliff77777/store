@@ -1,7 +1,9 @@
 <form action='{{ route('userupdate') }}' method="POST" id="update_user_form" onsubmit="return false;">
     @csrf
-    <p class="text-danger">需要修改會員資料請先輸入會員密碼</p>
     <div class="row">
+        <h1 class="my-5 py-5 ms-3">{{ $title }}</h1>
+        <p class="text-danger">需要修改會員資料請先輸入會員密碼</p>
+
         <div class="mb-3 col-lg-3">
             <label for="password" class="form-label">您目前的密碼</label>
             <input type="password" class="form-control" id="password" onchange=check_pass()>
