@@ -73,15 +73,15 @@
         </nav>
         <script>
             window.onload = () => {
-                cart_btn = document.getElementById("cart_btn");
-                cart_btn.addEventListener('click', () => {
-                    var cart_content = JSON.parse(localStorage.getItem('add_cart'));
-                    console.log(cart_content);
-                })
-                //navbar自動抓localstorage 數量
-                var gat_cart_content = JSON.parse(localStorage.getItem('add_cart'))
-                var cart_btn_count = document.getElementById("cart_btn_count")
-                var objectLength = Object.keys(gat_cart_content).length;
-                cart_btn_count.textContent = objectLength
+                // cart_btn = document.getElementById("cart_btn");
+                // cart_btn.addEventListener('click', () => {
+                //     var cart_content = JSON.parse(localStorage.getItem('add_cart'));
+                //     console.log(cart_content);
+                // })
+                // //navbar自動抓localstorage 數量
+                // var gat_cart_content = JSON.parse(localStorage.getItem('add_cart'))
+                // var cart_btn_count = document.getElementById("cart_btn_count")
+                // var objectLength = Object.keys(gat_cart_content).length;
+                // cart_btn_count.textContent = objectLength
             }
         </script>

@@ -71,6 +71,8 @@ Route::group(['prefix'=>'merchandise'],function(){
     Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
     Route::post('/buy',[MerchandiseController::class,'buy'])->name('buySomething');
     Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
+    Route::post('/cart_handler',[MerchandiseController::class,'cart_handler'])->name('cartHandler');
+
 
 
 });

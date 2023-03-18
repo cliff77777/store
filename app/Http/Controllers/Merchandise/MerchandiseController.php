@@ -17,8 +17,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Mockery\Undefined;
 use PhpParser\Node\Stmt\TryCatch;
 
+//services
+use App\Services\CartService;
+
 class MerchandiseController extends Controller
 {   
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
     //商品列表
     public function merchandiseList()
     {
@@ -346,7 +355,6 @@ class MerchandiseController extends Controller
     }
 
     //買一些東西
-
     public function buy(){
 
         log::info(request()->all());
@@ -362,5 +370,15 @@ class MerchandiseController extends Controller
         log::warning($get_user);
         log::info(session()->all());
 
+    }
+
+    //購物車
+    public function cart_handler(Request $request){
+        $data=$request->all();
+        if($data['method'] == 'add_cart'){
+            $this->cartService->addProduct($data['product_id'],$data['count']);
+        }
+        log::info($data);
+        dd("stop");
     }
 }

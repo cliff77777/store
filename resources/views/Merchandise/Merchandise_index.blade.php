@@ -103,6 +103,8 @@
 
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
         <script>
             //選擇圖片即時顯示的js
             function readURL(input) {
@@ -122,148 +124,37 @@
                     }
                 }
             };
-
             $(document).ready(function() {
-                //控制上架功能文字
-                $("#open_status").on('click', function() {
-                    var switch_status = $("#open_status").prop("checked");
-                    if (switch_status == false) {
-                        $("#open_status_label").text('關閉上架功能');
-                        $("#open_status").val("0");
-                    } else {
-                        $("#open_status_label").text('開啟上架功能');
-                        $("#open_status").val("1");
-
-                    }
-                })
-
-                $("#edit_data_btn").click(function() {
-                    var img = $("#photo")[0].files[0];
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ url('merchandise/product_update') }}',
-                        dataType: "json",
-                        data: $("#edit_form").serialize(),
-                        success: function(res) {
-                            let status = res['data']['status'];
-                            if (status == "200") {
-                                toastr.success("修改成功");
-                                // 暫時增加
-                                window.setTimeout(function() {
-                                    window.location.reload();
-                                }, 2000);
-                                if (img !== undefined) {
-                                    // console.log("有圖片");
-                                    // upload_img(res['insert_id'],img);
-                                } else {
-                                    console.log("沒有圖片");
-                                }
-                            } else {
-                                toastr.error("修改失敗");
-                            }
-                        },
-                        error: function(fail) {
-                            console.log(fail);
-                        }
-                    });
-                });
-
-                function upload_img(insert_id, upload_img) {
-                    var formData = new FormData();
-                    formData.append("file", upload_img);
-                    formData.append("real_name", $("#photo").val());
-                    formData.append("id", insert_id);
-                    $.ajax({
-                        type: 'post',
-                        processData: false,
-                        contentType: false,
-                        url: '{{ url('merchandise/create_product_process') }}',
-                        dataType: "json",
-                        data: formData,
-                        headers: {
-                            'X-CSRF-Token': '{{ csrf_token() }}'
-                        },
-                        success: function(res) {
-                            let data = res
-                            if (data["msg"] == "success") {
-                                toastr.success("圖片新增成功");
-                            } else {
-                                toastr.error(data["msg"]);
-
-                            }
-                        },
-                        error: function(fail) {
-                            console.log(fail);
-                        }
-                    });
-                };
-
                 var shopBtn = document.querySelectorAll('.shopBtn');
                 shopBtn.forEach(element => {
                     element.addEventListener('click', () => {
                         var method = element.getAttribute("method");
                         var count = document.getElementById('count');
-
                         // 加入購物車
                         if (method == "add_cart") {
                             var product_id = {{ $data['id'] }}
-                            //取得localstorage 購物車資料
-                            var gat_cart_content = JSON.parse(localStorage.getItem('add_cart'))
-                            //準備要存的資料
-                            var save_product = {
-                                "product_id": product_id,
-                                'count': parseInt(count.value),
-                            }
-
-                            if (gat_cart_content) {
-                                //全部要存的資料
-                                var DBstorage = gat_cart_content;
-                                //將一樣的product_id一起處理
-                                for (var key in gat_cart_content) {
-                                    if (key == product_id) {
-                                        DBstorage[key].count = parseInt(gat_cart_content[key].count) +
-                                            parseInt(count.value)
-                                    } else {
-                                        //否則就另外存
-                                        DBstorage[product_id] = save_product
-                                    }
+                            $.ajax({
+                                type: 'post',
+                                url: '{{ route('cartHandler') }}',
+                                dataType: "json",
+                                headers: {
+                                    'X-CSRF-Token': '{{ csrf_token() }}'
+                                },
+                                data: {
+                                    method: method,
+                                    count: count.value,
+                                    product_id: product_id
+                                },
+                                success: function(res) {
+                                    console.log(res);
+                                },
+                                error: function(fail) {
+                                    console.log(fail);
                                 }
-                            } else {
-                                //沒有購物車就存新的
-                                var DBstorage = {};
-                                DBstorage[product_id] = save_product;
-                            }
-                            var save_cart_data = JSON.stringify(DBstorage);
-                            // 儲存資料
-                            localStorage.setItem('add_cart', save_cart_data)
-                            //點後抓localstorage 數量
-                            var cart_btn_count = document.getElementById("cart_btn_count")
-                            var objectLength = Object.keys(gat_cart_content).length;
-                            cart_btn_count.textContent = objectLength
-
+                            });
                         }
+                    })
 
-                        $.ajax({
-                            type: 'post',
-                            url: '{{ route('buySomething') }}',
-                            dataType: "json",
-                            data: {
-                                method: method,
-                                count: count.value,
-                                product_id: {{ $data['id'] }}
-                            },
-                            headers: {
-                                'X-CSRF-Token': '{{ csrf_token() }}'
-                            },
-                            success: function(res) {
-
-                            },
-                            error: function(fail) {
-                                console.log(fail);
-                            }
-                        });
-
-                    });
                 });
             })
         </script>
