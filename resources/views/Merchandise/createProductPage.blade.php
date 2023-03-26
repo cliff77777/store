@@ -28,6 +28,11 @@
                 </div>
                 <span class="ns_font">(必填)</span>
                 <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="cost" placeholder="成本價格" required name="cost">
+                    <label for="cost">成本</label>
+                </div>
+                <span class="ns_font">(必填)</span>
+                <div class="form-floating mb-3">
                     <input type="number" class="form-control" id="count" placeholder="商品數量" required name="count">
                     <label for="count">商品數量</label>
                 </div>

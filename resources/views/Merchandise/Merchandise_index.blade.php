@@ -91,7 +91,7 @@
                     圖片介紹:
                 </p>
                 <p>
-                    {{ $data['introduction'] }}
+                    {!! $data['introduction'] !!}
                 </p>
                 @foreach ($img_url as $value)
                     <div class="">

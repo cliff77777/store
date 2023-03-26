@@ -84,6 +84,7 @@ class MerchandiseController extends Controller
             'name_en'=>$request->name_en,
             'introduction'=>$request->introduction,
             'price'=>$request->price,
+            'cost'=>$request->cost,
             'count'=>$request->count,
             'photo'=>'default_img.jpeg' //沒有圖片給一個預設圖
         ];
