@@ -2,22 +2,26 @@
 @section('title', '產品中心')
 @section('content')
     <div class="container content ">
-        <h2 class="my-3 py-5">產品中心</h2>
-        <div class="card-group">
-            @foreach ($data as $key => $value)
-                <div class="card">
-                    <img src="{{ asset($value['photo']) }}" style="height:180px;" class="card-img-top img-thumbnail img-fluid"
-                        alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $value['name'] }}</h5>
+        <h2 class="my-5 py-3">產品中心</h2>
+        <div class="row row-cols-1 row-cols-md-4 g-4 ">
+            <div class="card-group">
+                @foreach ($data as $key => $value)
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{ asset($value['photo']) }}" class="card-img-top img-thumbnail " alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $value['name'] }}</h5>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn btn-primary detail_btn" data-id="{{ $value['id'] }}">立即搶購</a>
+                                {{-- <small class="-muted">Last updated 3 mins ago</small> --}}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary detail_btn" data-id="{{ $value['id'] }}">立即搶購</a>
-                        {{-- <small class="-muted">Last updated 3 mins ago</small> --}}
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
+
     </div>
     {{-- 刪除modal --}}
     @include('layout.alert')
