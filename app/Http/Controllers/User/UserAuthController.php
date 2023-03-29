@@ -63,9 +63,9 @@ class UserAuthController extends Controller
          log::notice("註冊成功");
          $mail_binding=[
             'name'=>$get_data['name'],
-            'email'=>$get_data->email
+            'email'=>$get_data['email']
          ];
-         //並帶上註冊成功訊息傳到email畫面
+         //將註冊成功新建給queue處理
          SendSignUpMailJob::dispatch($mail_binding);
       //寄出成功郵件後回到註冊頁面
          return redirect()->route('signInPage')->with('message', '恭喜您註冊成功，請重新登入');

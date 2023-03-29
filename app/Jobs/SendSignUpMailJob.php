@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mail;
 
-class SendsSignUpMailJob implements ShouldQueue
+class SendSignUpMailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $mail_binding;
