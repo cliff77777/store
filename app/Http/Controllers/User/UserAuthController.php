@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendsSignUpMailJob;
 // use GuzzleHttp\Psr7\Request;
 use Validator; //驗證器
 use Log;
@@ -10,7 +11,8 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
-
+//job
+use App\Jobs\SendSignUpMailJob;
 
 
 //Services
@@ -60,16 +62,11 @@ class UserAuthController extends Controller
       if(isset($add_member->id) == true){
          log::notice("註冊成功");
          $mail_binding=[
-            'name'=>$get_data['name']
+            'name'=>$get_data['name'],
+            'email'=>$get_data->email
          ];
          //並帶上註冊成功訊息傳到email畫面
-         Mail::send('email.signUpEmailNotification',$mail_binding,
-         function($mail) use ($get_data){
-            $mail->to($get_data['email']);
-            $mail->from('sxs0507@gmail.com');
-            $mail->subject('恭喜您完成註冊');
-         }
-      ); 
+         SendSignUpMailJob::dispatch($mail_binding);
       //寄出成功郵件後回到註冊頁面
          return redirect()->route('signInPage')->with('message', '恭喜您註冊成功，請重新登入');
       }
