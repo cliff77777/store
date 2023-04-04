@@ -196,8 +196,9 @@ class MerchandiseController extends Controller
             "count"=>$request["count"],
             "introduction"=>$request["introduction"],
             "introduction_en"=>$request["introduction_en"],
-            "status"=>$request['open_status'],
+            "status"=>(isset($request['open_status'])?"1":"0"),
         ];
+        
         $del_img_arrray=[];
         if($request["del_img_group"]!==null){
             $del_img_arrray=explode(",",$request["del_img_group"]);
