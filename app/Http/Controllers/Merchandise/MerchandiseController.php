@@ -180,7 +180,7 @@ class MerchandiseController extends Controller
         foreach($product_ablum as $key=>$value){
             $product_ablum[$key]['rotue']=$this->img_route($value['photo_name']);
         }
-        // dd($product_ablum->toArray());
+        // dd($product_data);
 
 
         return view('merchandise.editProductIndex',['data'=>$product_data,'photo_ablum'=>$product_ablum]);
@@ -248,6 +248,7 @@ class MerchandiseController extends Controller
                 "photo"=>$font_img["photo_name"],
             ];
         }
+        log::info(["update"=>$update]);
         $update_font_img = Merchandise::where("id",$request['target_id'])->update($update);
         //回傳更新狀態
         if($update_font_img){

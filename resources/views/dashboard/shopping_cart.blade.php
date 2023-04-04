@@ -17,28 +17,28 @@
     </table>
 </div>
 <script>
-    // $(document).ready(function() {
-    //     $('#myTable').DataTable({
-    //         "ajax": {
-    //             "url": "/get_data",
-    //             "type": "POST",
-    //             "data": function(d) {
-    //                 d.limit = 20;
-    //             }
-    //         },
-    //         "columns": [{
-    //                 "data": "id"
-    //             },
-    //             {
-    //                 "data": "name"
-    //             },
-    //             {
-    //                 "data": "email"
-    //             },
-    //             {
-    //                 "data": "phone"
-    //             }
-    //         ]
-    //     });
-    // });
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "ajax": {
+                "url": "/get_data",
+                "type": "POST",
+                "data": function(d) {
+                    d.limit = 20;
+                }
+            },
+            "columns": [{
+                    "data": "id"
+                },
+                {
+                    "data": "name"
+                },
+                {
+                    "data": "email"
+                },
+                {
+                    "data": "phone"
+                }
+            ]
+        });
+    });
 </script>

@@ -1,6 +1,7 @@
 @extends('layout.master')
 @section('title', '編輯商品頁面')
 <div class="bg-secondary">
+    {{-- {{ dd($data->name) }} --}}
     @section('content')
         <div class="container content">
             <h2 class="my-3 py-3">修改商品</h2>
@@ -17,7 +18,7 @@
                 <span class="ns_font">(必填)</span>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="name" placeholder="商品名稱" required name="name"
-                        value={{ $data['name'] }}>
+                        value="{{ htmlspecialchars(str_replace('"', '&quot;', $data->name)) }}">
                     <label for="name">商品名稱</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -38,11 +39,11 @@
                     <label for="count">商品數量</label>
                 </div>
                 <span class="ns_font">(必填)</span>
+                <label for="introduction">商品介紹</label>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" placeholder="商品介紹" id="introduction" style="height: 100px" required name="introduction">{{ $data['introduction'] }}</textarea>
-                    <label for="introduction">商品介紹</label>
                 </div>
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-3" hidden>
                     <textarea class="form-control" placeholder="商品介紹(英文)" id="introduction_en" style="height: 100px" name="introduction_en">{{ $data['introduction_en'] }}</textarea>
                     <label for="introduction_en">商品介紹(英文)</label>
                 </div>
@@ -115,9 +116,11 @@
         <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-
-
+        <link rel="stylesheet" href="{{ asset('vendor/ckeditor/ckeditor.css') }}">
+        <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
         <script>
+            CKEDITOR.replace('introduction');
+            CKEDITOR.replace('introduction_en');
             toastr.options = {
                 // 參數設定[註1]
                 "closeButton": false, // 顯示關閉按鈕
