@@ -68,8 +68,9 @@ Route::group(['prefix'=>'merchandise'],function(){
         Route::post('/del_product',[MerchandiseController::class,'softDel']);
     }); 
     //商品中心
-    Route ::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
-    Route::post('/buy',[MerchandiseController::class,'buy'])->name('buySomething');
+    Route::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
+    //結帳頁面
+    Route::get('/buy',[MerchandiseController::class,'buy'])->middleware('auth')->name('buySomething');
     Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
     Route::post('/cart_handler',[MerchandiseController::class,'cart_handler'])->name('cartHandler');
 

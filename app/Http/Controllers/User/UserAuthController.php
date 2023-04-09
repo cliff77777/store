@@ -85,9 +85,6 @@ class UserAuthController extends Controller
 //會員登入處理
    public function signInHandle(Request $request){
       $credentials = $request->only('email', 'password');
-      $test=Auth::attempt($credentials);
-      log::info($test);
-
       //啟用紀錄sql語法
       DB::enableQueryLog();
 

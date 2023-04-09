@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Log;
 
 class Authenticate extends Middleware
 {
@@ -15,7 +16,8 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+            log::warning("沒有登入會員");
+            return route('signInPage');
         }
     }
 }

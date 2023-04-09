@@ -76,6 +76,9 @@
                 </button>
             </div>
             <div class="shop_area d-flex align-items-center">
+                <label for="" class="me-2">剩餘:</label>
+                <input type="text" disabled class="form-control me-2" style="width:150px;" value="{{ $data['count'] }}"
+                    id="storage_count">
                 <input type="number" class="form-control me-2" placeholder="購買數量" style="width:150px;" id="count"
                     method="count">
                 <button class="btn btn-success me-2 shopBtn" type="button" method="buy_now" id="buy_now">
@@ -125,37 +128,103 @@
                 }
             };
             $(document).ready(function() {
+                var auth_confirm = document.getElementById("auth_confirm").getAttribute("auth");
                 var shopBtn = document.querySelectorAll('.shopBtn');
                 shopBtn.forEach(element => {
                     element.addEventListener('click', () => {
                         var method = element.getAttribute("method");
-                        var count = document.getElementById('count');
-                        // 加入購物車
-                        if (method == "add_cart") {
-                            var product_id = {{ $data['id'] }}
-                            $.ajax({
-                                type: 'post',
-                                url: '{{ route('cartHandler') }}',
-                                dataType: "json",
-                                headers: {
-                                    'X-CSRF-Token': '{{ csrf_token() }}'
-                                },
-                                data: {
-                                    method: method,
-                                    count: count.value,
-                                    product_id: product_id
-                                },
-                                success: function(res) {
-                                    console.log(res);
-                                },
-                                error: function(fail) {
-                                    console.log(fail);
-                                }
-                            });
+                        var storage_count = document.getElementById("storage_count").value;
+                        var count = document.getElementById('count').value;
+                        var product_id = {{ $data['id'] }}
+                        var after_count = storage_count - count;
+
+                        if (count == "" && method != "add_focus") {
+                            alert("請輸入購買數量");
+                        } else if (after_count < 0) {
+                            alert("數量不足");
+                        } else if (count != "" && method != "add_focus") {
+                            add_cart(product_id, count, method, auth_confirm);
+                        } else {
+                            alert("加到最愛");
                         }
                     })
+                })
 
-                });
-            })
+            });
+
+            let add_cart = (product_id, count, method, auth_confirm) => {
+                let cart = localStorage.getItem('cart');
+                if (!cart) {
+                    // 若購物車資料不存在，則建立一個新的空購物車
+                    cart = {
+                        items: [],
+                    };
+                } else {
+                    cart = JSON.parse(cart);
+                }
+
+                // 判斷是否已存在相同商品，若存在則更新數量
+                let index = cart.items.findIndex(item => item.id === product_id);
+                if (index !== -1) {
+                    cart.items[index].count = parseInt(cart.items[index].count);
+                    count = parseInt(count);
+                    cart.items[index].count += count;
+                } else {
+                    // 若不存在相同商品，則新增一筆新資料至購物車
+                    cart.items.push({
+                        id: product_id,
+                        count: count,
+                    });
+                }
+                // 將資料存回 localstorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                if (auth_confirm == "member") {
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('cartHandler') }}',
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-Token': '{{ csrf_token() }}'
+                        },
+                        data: {
+                            method: method,
+                            count: count,
+                            product_id: product_id
+                        },
+                        success: function(res) {
+                            window.location.href = '{{ Route('buySomething') }}'
+                            console.log(res);
+                        },
+                        error: function(fail) {
+                            console.log(fail);
+                        }
+                    });
+                    alert(auth_confirm);
+                } else if (auth_confirm == "guest") {
+                    //test
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('cartHandler') }}',
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-Token': '{{ csrf_token() }}'
+                        },
+                        data: {
+                            method: method,
+                            count: count,
+                            product_id: product_id
+                        },
+                        success: function(res) {
+                            window.location.href = '{{ Route('buySomething') }}'
+                            console.log(res);
+                        },
+                        error: function(fail) {
+                            console.log(fail);
+                        }
+                    });
+                    alert(auth_confirm);
+                }
+
+            };
         </script>
     @endsection

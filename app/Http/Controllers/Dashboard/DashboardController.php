@@ -77,7 +77,6 @@ class DashboardController extends Controller
       case "shopping_cart":
         $title ="購物車";
         $response_html= view('dashboard.shopping_cart',["title"=>$title])->render();
-
           break;      
       case "my_favorite":
           break;      

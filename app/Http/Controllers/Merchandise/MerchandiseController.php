@@ -151,10 +151,6 @@ class MerchandiseController extends Controller
             $url=$this->img_route($value['photo_name']);
             $img_url[$key]=$url;
         }
-        log::info($get_data->toArray());
-
-        
-        
         return view('Merchandise.Merchandise_index',["img_url"=>$img_url,'data'=>$get_data]);
     }
 
@@ -360,29 +356,16 @@ class MerchandiseController extends Controller
 
     //買一些東西
     public function buy(){
-
-        log::info(request()->all());
-        if(null !== (session()->get('user_data'))){
-            $get_user = session()->get('user_data');
-        }else{
-            $get_user = [
-                'name'=>'guest'
-            ];
-        }
-
-
-        log::warning($get_user);
-        log::info(session()->all());
-
+    log::info("buyin");
     }
 
     //購物車
     public function cart_handler(Request $request){
         $data=$request->all();
-        if($data['method'] == 'add_cart'){
-            $this->cartService->addProduct($data['product_id'],$data['count']);
+        log::info("cart_handler");
+        if($data['method'] == "buy_now"){
+            return response()->json(['success' => true]);
         }
-        log::info($data);
-        dd("stop");
+        // $this->cartService->addProduct($data['product_id'],$data['count'],$data['method']);
     }
 }
