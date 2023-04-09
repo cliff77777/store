@@ -7,8 +7,7 @@ use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Merchandise\MerchandiseController;
 use App\Http\Controllers\HomePage\HomePageController;
-
-
+use App\Http\Controllers\Payment\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +73,12 @@ Route::group(['prefix'=>'merchandise'],function(){
     Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
     Route::post('/cart_handler',[MerchandiseController::class,'cart_handler'])->name('cartHandler');
 
-
-
 });
+
+//購買頁面
+Route::group(['prefix'=>'Payment'],function(){
+    Route::group(['middleware'=>['auth']],function(){
+        Route::get('/index',[PaymentController::class,'index'])->name('PaymentIndex');
+    }); 
+});
+

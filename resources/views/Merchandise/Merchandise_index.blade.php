@@ -192,7 +192,7 @@
                             product_id: product_id
                         },
                         success: function(res) {
-                            window.location.href = '{{ Route('buySomething') }}'
+                            window.location.href = '{{ Route('PaymentIndex') }}'
                             console.log(res);
                         },
                         error: function(fail) {
