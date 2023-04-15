@@ -68,10 +68,10 @@ Route::group(['prefix'=>'merchandise'],function(){
     }); 
     //商品中心
     Route::get('/MerchandiseCenter',[MerchandiseController::class,'MerchandiseCenter']);
-    //結帳頁面
-    Route::get('/buy',[MerchandiseController::class,'buy'])->middleware('auth')->name('buySomething');
     Route::get('/merchandise_index/{id}',[MerchandiseController::class,'merchandise_index']);
     Route::post('/cart_handler',[MerchandiseController::class,'cart_handler'])->name('cartHandler');
+    //結帳頁面
+    Route::get('/buy',[MerchandiseController::class,'buy'])->middleware('auth')->name('buySomething');
 
 });
 

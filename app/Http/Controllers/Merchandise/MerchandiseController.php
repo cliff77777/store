@@ -363,9 +363,9 @@ class MerchandiseController extends Controller
     public function cart_handler(Request $request){
         $data=$request->all();
         log::info("cart_handler");
-        if($data['method'] == "buy_now"){
-            return response()->json(['success' => true]);
-        }
-        // $this->cartService->addProduct($data['product_id'],$data['count'],$data['method']);
+        // if($data['method'] == "buy_now"){
+        //     return response()->json(['success' => true]);
+        // }
+        $this->cartService->addProduct($data['product_id'],$data['count'],$data['method']);
     }
 }
