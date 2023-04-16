@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::table('merchandises', function (Blueprint $table) {
             // 
-            $table->string("valid")->commit("商品有效性")->default("1");//商品有效性
-            $table->integer("sales")->commit("銷售量")->after("price")->nullable();//銷售量
-            $table->integer("cost")->commit("成本")->after("price");//成本
+            $table->string("valid")->comment("商品有效性")->default("1");//商品有效性
+            $table->integer("sales")->comment("銷售量")->after("price")->nullable();//銷售量
+            $table->integer("cost")->comment("成本")->after("price");//成本
         });
     }
 

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('product_ablums', function (Blueprint $table) {
             $table->id();
             
-            $table->string("merchandise_id")->commit("商品編號");//商品編號
-            $table->string("photo_name")->commit("圖片名稱");//圖片名稱
-            $table->string("photo_origin_name")->commit("原始圖片名稱");//原始圖片名稱
-            $table->string("photo_order")->commit("圖片順序");//圖片順序
+            $table->string("merchandise_id")->comment("商品編號");//商品編號
+            $table->string("photo_name")->comment("圖片名稱");//圖片名稱
+            $table->string("photo_origin_name")->comment("原始圖片名稱");//原始圖片名稱
+            $table->string("photo_order")->comment("圖片順序");//圖片順序
 
             $table->timestamps();
         });

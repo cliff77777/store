@@ -9,7 +9,10 @@ use Log;
 class PaymentController extends Controller
 {
     //
-    public function index(){
+    public function index(Request $request){
         log::info("inthepaymentindex");
+        log::info($request->all());
+
+        return view('payment.payment');
     }
 }

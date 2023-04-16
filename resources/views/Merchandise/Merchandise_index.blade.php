@@ -178,52 +178,30 @@
                 }
                 // 將資料存回 localstorage
                 localStorage.setItem('cart', JSON.stringify(cart));
-                if (auth_confirm == "member") {
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route('cartHandler') }}',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-Token': '{{ csrf_token() }}'
-                        },
-                        data: {
-                            method: method,
-                            count: count,
-                            product_id: product_id
-                        },
-                        success: function(res) {
-                            window.location.href = '{{ Route('PaymentIndex') }}'
-                            console.log(res);
-                        },
-                        error: function(fail) {
-                            console.log(fail);
-                        }
-                    });
-                    alert(auth_confirm);
-                } else if (auth_confirm == "guest") {
-                    //test
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route('cartHandler') }}',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-Token': '{{ csrf_token() }}'
-                        },
-                        data: {
-                            method: method,
-                            count: count,
-                            product_id: product_id
-                        },
-                        success: function(res) {
-                            window.location.href = '{{ Route('buySomething') }}'
-                            console.log(res);
-                        },
-                        error: function(fail) {
-                            console.log(fail);
-                        }
-                    });
-                    alert(auth_confirm);
-                }
+                // if (auth_confirm == "member") {
+                // } else if (auth_confirm == "guest") {
+                // }
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route('cartHandler') }}',
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-Token': '{{ csrf_token() }}'
+                    },
+                    data: {
+                        method: method,
+                        count: count,
+                        product_id: product_id,
+                        auth_confirm: auth_confirm
+                    },
+                    success: function(res) {
+                        window.location.href = res.redirect;
+                        console.log(res);
+                    },
+                    error: function(fail) {
+                        console.log(fail);
+                    }
+                });
 
             };
         </script>

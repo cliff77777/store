@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use Validator; //驗證器
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use App\Http\Controllers\Payment\PaymentController;
+
 // use Log;
 
 // model
@@ -24,10 +26,15 @@ use App\Services\CartService;
 class MerchandiseController extends Controller
 {   
     protected $cartService;
+    protected $paymentController;
 
-    public function __construct(CartService $cartService)
+    public function __construct(
+        CartService $cartService,
+        PaymentController $paymentController
+        )
     {
         $this->cartService = $cartService;
+        $this->paymentController = $paymentController;
     }
     //商品列表
     public function merchandiseList()
@@ -362,10 +369,13 @@ class MerchandiseController extends Controller
     //購物車
     public function cart_handler(Request $request){
         $data=$request->all();
-        log::info("cart_handler");
-        // if($data['method'] == "buy_now"){
-        //     return response()->json(['success' => true]);
-        // }
-        $this->cartService->addProduct($data['product_id'],$data['count'],$data['method']);
+        $user_id=$this->cartService->addProduct($data['product_id'],$data['count'],$data['method'],$data['auth_confirm']);
+
+        if($data['method']=='buy_now'){
+            $view = action([PaymentController::class, 'index'],['user_id' => $user_id]);
+            return response()->json(['redirect' => $view]);
+        }else{
+            return response()->json(['redirect' => "add success"]);
+        }
     }
 }

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('shopping_carts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable()->commit('會員id');
-            $table->string('session_id')->nullable()->commit('沒有登入紀錄sesssion');
-            $table->string('cart_detail',2000)->commit('購物車全部資料');
+            $table->unsignedBigInteger('user_id')->nullable()->comment('會員id');
+            $table->string('session_id')->nullable()->comment('沒有登入紀錄sesssion');
+            $table->string('product_id')->comment('購物車全部資料');
+            $table->string('count')->comment('購買數量');
             $table->timestamps();
         });
     }

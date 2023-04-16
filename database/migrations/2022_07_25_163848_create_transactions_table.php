@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
 
-            $table->string("user_id")->commit("會員編號");//會員編號
-            $table->string("merchandise_id")->commit("商品編號");//商品編號
-            $table->integer("price")->commit("購買價格");//購買價格
-            $table->integer("buy_count")->commit("購買數量");//購買數量
-            $table->integer("total_price")->commit("總金額");//總金額
+            $table->string("user_id")->comment("會員編號");//會員編號
+            $table->string("merchandise_id")->comment("商品編號");//商品編號
+            $table->integer("price")->comment("購買價格");//購買價格
+            $table->integer("buy_count")->comment("購買數量");//購買數量
+            $table->integer("total_price")->comment("總金額");//總金額
 
             $table->timestamps();
 
